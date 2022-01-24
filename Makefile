@@ -1,5 +1,9 @@
-SRCS	= test.c\
+SRCS	= main.c\
 	  parsing.c\
+	  pars.c\
+	  pars2.c\
+	  pars_map.c\
+	  check_map.c\
 	  init.c
 
 OBJS	= ${SRCS:.c=.o}
