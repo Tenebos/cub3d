@@ -14,14 +14,6 @@
 #include "./My-own-libft/includes/libft.h"
 #include "./My-own-libft/includes/buffer.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
 int	end_close(t_vars *vars)
 {
 	if (vars->win)
@@ -45,7 +37,6 @@ int	mlx_keycode(int keycode, t_vars *vars)
 
 void	resolution(int argc, char **argv, t_vars *vars)
 {
-
 	if (argc == 3)
 	{
 		vars->res_x = ft_atoi(argv[1]);
@@ -58,21 +49,12 @@ void	resolution(int argc, char **argv, t_vars *vars)
 	}
 }
 
-void	create_img(t_vars *vars)
-{
-	vars->img.img = mlx_new_image(vars->mlx, vars->res_x, vars->res_y);
-	vars->img.addr = mlx_get_data_addr(vars->img.img, &vars->img.bits_per_pixel,
-		&vars->img.line_length, &vars->img.endian);
-	my_mlx_pixel_put(&vars->img, 5, 5, 0x00FF0000);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-}
-
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
 
 	mem_set(&vars, 0, sizeof(t_vars));
-	if (parsing_hub(argc, argv, &vars) == 1)
+	if (parsing_hub(argc, argv, &vars) == 10)
 	{
 //		resolution(argc, argv, &vars);
 		vars.res_x = 1920;

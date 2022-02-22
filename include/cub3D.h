@@ -81,9 +81,12 @@ int	is_map_line(char *line);
 void	create_txt_map(t_vars *vars, char *line);
 int	verify_map(char **map);
 
-void	clear_pars(t_pars *pars);
-
+//img
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	create_img(t_vars *vars);
+
+//clean and close
+void	clear_pars(t_pars *pars);
 int	end_close(t_vars *vars);
 
 #endif

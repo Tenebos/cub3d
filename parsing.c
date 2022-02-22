@@ -132,5 +132,5 @@ int	parsing_hub(int argc, char **argv, t_vars *vars)
 		return (display(ERROR_MAP_1));
 	if (verify_map(vars->pars.map) == -1)
 		return (display(ERROR_MAP_2));
-	return (Success);
+	return (10);
 }

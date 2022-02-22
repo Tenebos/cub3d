@@ -4,6 +4,7 @@ SRCS	= main.c\
 	  pars2.c\
 	  pars_map.c\
 	  check_map.c\
+	  img.c\
 	  init.c
 
 OBJS	= ${SRCS:.c=.o}
