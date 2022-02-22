@@ -47,6 +47,18 @@ typedef struct  s_vars
         t_pars  pars;
 }               t_vars;
 
+typedef enum
+{
+	WRONG_AC,
+	SUCESS,
+	IS_NOT_CUBE,
+	CANT_OPEN,
+	ERROR_INSIDE_CUBE,
+	ERROR_MAP_1,
+	ERROR_MAP_2,
+	ERROR_MAX
+}	t_error;
+
 //pars
 int	pars_NO(t_pars *pars, char *line);
 int	pars_SO(t_pars *pars, char *line);
@@ -70,7 +82,6 @@ void	create_txt_map(t_vars *vars, char *line);
 int	verify_map(char **map);
 
 void	clear_pars(t_pars *pars);
-
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	end_close(t_vars *vars);

@@ -84,5 +84,4 @@ int	main(int argc, char **argv)
 		mlx_hook(vars.win, 33, 1L<<17, end_close, &vars); //croix
 		mlx_loop(vars.mlx);
 	}
-	printf("retour de parsing : %d\n", parsing_hub(argc, argv, &vars));
 }

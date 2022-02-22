@@ -17,19 +17,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-// avancer par etape
-// trouver comment faire marcher gnl        ok
-// trouver comment diviser une ligne        ok
-
-// verifier une texture ?                   ok
-
-// exporter et clean une texture            ok
-// dupliquer pour toutes les autres.        ok
-// checker les doublons                     ?
-// verifier la validite de la map                     ok
-// -> un seul caractere de joueur                     ok
-// -> 0 et cara joueur toujours entoures par des 1    ok
-
 static int	pars_verify(t_pars *pars)
 {
 	int	i;
@@ -51,18 +38,6 @@ static int	pars_verify(t_pars *pars)
 		return (-1);
 	// check ou pas check de textures differentes ?
 	return (1);
-}
-
-static void	init_pars(t_pars *pars)
-{
-	pars->NO = NULL;
-	pars->WE = NULL;
-	pars->EA = NULL;
-	pars->SO = NULL;
-	pars->C = NULL;
-	pars->F = NULL;
-	pars->map = NULL;
-	pars->map_txt = NULL;
 }
 
 void	clear_pars(t_pars *pars)
@@ -102,7 +77,7 @@ static int	get_info(int fd, t_vars *vars, char *line, char *buffer)
 
 	check = 1;
 	endmap = 0;
-	init_pars(&vars->pars);
+	init_zero(&vars->pars, sizeof(vars->pars));
 	while ((check == 1 || check == 0) && (get_next_line(fd, &buffer, &line) || line))
 	{
 		check = pars_solo_line(vars, line);
@@ -123,24 +98,39 @@ static int	get_info(int fd, t_vars *vars, char *line, char *buffer)
 	return (1);
 }
 
+static int	display(t_error code)
+{
+	static const char	*error[ERROR_MAX] =
+	{
+		[WRONG_AC] = "Error Parsing :: wrong number of arguments",
+		[IS_NOT_CUBE] = "Error Parsing :: argument is not ending by .cube",
+		[CANT_OPEN] = "Error Parsing :: cannot open the argument",
+		[ERROR_INSIDE_CUBE] = "Error Parsing :: Wrong content for .cube",
+		[ERROR_MAP_1] = "Error Parsing :: map invalid",
+		[ERROR_MAP_2] = "Error Parsing :: map invalid"
+	};
+	printf("%s\n", error[code]);
+	return (code);
+}
+
 int	parsing_hub(int argc, char **argv, t_vars *vars)
 {
 	int	len;
 	int	fd;
 
 	if (argc != 2)
-		return (-2);
+		return (display(WRONG_AC));
 	len = str_len(argv[1]);
 	if (len < 5 || str_comp(&argv[1][len - 5], ".cube") != 0)
-		return (-1);
+		return (display(IS_NOT_CUBE));
 	fd = open(argv[1], O_RDONLY);
 	if (fd <= 0)
-		return (-3);
+		return (display(CANT_OPEN));
 	if (get_info(fd, vars, NULL, NULL) < 0)
-		return (-4);
+		return (display(ERROR_INSIDE_CUBE));
 	if (convert_map(&vars->pars) == -1)
-		return (-5);
+		return (display(ERROR_MAP_1));
 	if (verify_map(vars->pars.map) == -1)
-		return (-6);
-	return (1);
+		return (display(ERROR_MAP_2));
+	return (Success);
 }
