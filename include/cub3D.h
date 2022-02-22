@@ -16,6 +16,13 @@
 #include "./../minilibx-linux/mlx.h"
 #include "./../minilibx-linux/mlx_int.h"
 
+typedef struct  s_game
+{
+	int player_x;
+	int player_y;
+	int player_pdv;
+}		t_game;
+
 typedef struct	s_data
 {
 	void	*img;
@@ -45,6 +52,7 @@ typedef struct  s_vars
         int     res_y;
         t_data  img;
         t_pars  pars;
+		t_game	game;
 }               t_vars;
 
 typedef enum
@@ -84,6 +92,10 @@ int	verify_map(char **map);
 //img
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	create_img(t_vars *vars);
+void	refresh_img(t_vars *vars);
+
+//collision
+void	check_collision (t_vars *vars, int keycode);
 
 //clean and close
 void	clear_pars(t_pars *pars);

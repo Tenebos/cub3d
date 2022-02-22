@@ -14,13 +14,31 @@
 #include "./My-own-libft/includes/libft.h"
 #include "./My-own-libft/includes/buffer.h"
 
-
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
+}
+
+void    print_player(t_vars *vars)
+{
+    int i;
+    int j;
+
+    i = -2;
+    j = -2;
+    while (i <= 2)
+    {
+        while (j <= 2)
+        {
+            my_mlx_pixel_put(&vars->img, (vars->game.player_x + i), (vars->game.player_y + j), 0x000000FF);
+            j++;
+        }
+        i++;
+        j = -2;
+    }
 }
 
 void    print_case(t_vars *vars, char c, int line, int colonn)
@@ -34,11 +52,11 @@ void    print_case(t_vars *vars, char c, int line, int colonn)
     {
         while (j <= 15)
         {
-            if (c == '1')
+            if (c == '1' || c == ' ')
             	my_mlx_pixel_put(&vars->img, (line + i), (colonn + j), 0x00FF0000);
-            else if (c == '0')
+            else
                 my_mlx_pixel_put(&vars->img, (line + i), (colonn + j), 0x0000FF00);
-        j++;
+            j++;
         }
         j = 0;
         i++;
@@ -59,9 +77,16 @@ void    create_map(t_vars *vars)
             print_case(vars, vars->pars.map[i][j], (15 + 15 * j), (15 + 15 * i));
             j++;
         }
+        print_player(vars);
         i++;
         j = 0;
     }
+}
+
+void    refresh_img(t_vars *vars)
+{
+    mlx_destroy_image(vars->mlx, vars->img.img);
+    create_img(vars);
 }
 
 void	create_img(t_vars *vars)
