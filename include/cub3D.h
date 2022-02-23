@@ -15,12 +15,13 @@
 
 #include "./../minilibx-linux/mlx.h"
 #include "./../minilibx-linux/mlx_int.h"
+#include <math.h>
 
 typedef struct  s_game
 {
 	int player_x;
 	int player_y;
-	int player_pdv;
+	double player_pdv;
 }		t_game;
 
 typedef struct	s_data
@@ -96,6 +97,8 @@ void	refresh_img(t_vars *vars);
 
 //collision
 void	check_collision (t_vars *vars, int keycode);
+void	find_view_end(t_vars *vars);
+void	rotate_view(t_vars *vars, int keycode);
 
 //clean and close
 void	clear_pars(t_pars *pars);

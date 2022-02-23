@@ -34,6 +34,9 @@ int	mlx_keycode(int keycode, t_vars *vars)
 		end_close(vars);
 	if (keycode == 119 || keycode == 115 || keycode == 97 || keycode == 100)
 		check_collision(vars, keycode);
+	if (keycode == 65363 || keycode == 65361)
+		rotate_view(vars, keycode);
+	printf("%d\n", keycode);
 	return (1);
 }
 
@@ -66,6 +69,14 @@ void 	get_player_start(t_vars *vars)
 			{
 				vars->game.player_x = 22 + j * 15;
 				vars->game.player_y = 22 + i * 15;
+				if (vars->pars.map[i][j] == 'N')
+					vars->game.player_pdv = 0;
+				else if (vars->pars.map[i][j] == 'E')
+					vars->game.player_pdv = M_PI / 2;
+				else if (vars->pars.map[i][j] == 'S')
+					vars->game.player_pdv = M_PI;
+				else if (vars->pars.map[i][j] == 'W')
+					vars->game.player_pdv = M_PI * 2;	
 			}
 			j++;
 		}

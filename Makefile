@@ -6,6 +6,7 @@ SRCS	= main.c\
 	  check_map.c\
 	  img.c\
 	  collision.c\
+	  trigo.c\
 	  init.c
 
 OBJS	= ${SRCS:.c=.o}
