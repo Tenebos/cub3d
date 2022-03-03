@@ -13,48 +13,95 @@
 #include "./include/cub3D.h"
 #include "./My-own-libft/includes/libft.h"
 #include "./My-own-libft/includes/buffer.h"
-#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-double   get_opposite(int adj, int angle)
+int    adapt_angle(t_vars *vars)
 {
-    return (adj * tan(angle));
+    if (vars->game.player_pdv >= 270)
+        return (vars->game.player_pdv - 270);
+    else if (vars->game.player_pdv >= 180)
+        return (vars->game.player_pdv - 180);
+    else if (vars->game.player_pdv >= 90)
+        return (vars->game.player_pdv - 90);
+    return (vars->game.player_pdv);
 }
 
-double   get_hypothenus(int adj, int angle)
+double  get_adj_f_one(int angle)
 {
-    return (cos(angle) / adj);
+    if (angle == 0)
+        return (1);
+    else if (angle == 15)
+        return (1);
+    else if (angle == 30)
+        return (1);
+    else if (angle == 45)
+        return (1);
+    else if (angle == 60)
+        return (0.5773503);
+    else if (angle == 75)
+        return (0.2679492);
+    else
+        return (-1);
 }
 
-void    find_view_end(t_vars *vars)
+double  get_opp_f_one(int angle)
 {
-    double delta_x;
-    double delta_y;
+    if (angle == 0)
+        return (0);
+    else if (angle == 15)
+        return (0.2679492);
+    else if (angle == 30)
+        return (0.5773503);
+    else if (angle == 45)
+        return (1);
+    else if (angle == 60)
+        return (1);
+    else if (angle == 75)
+        return (1);
+    else
+        return (-1);
+}
 
-    delta_y = 0;
-    printf("%f\n", vars->game.player_pdv);
-    if (vars->game.player_pdv >= 3.14115 + (3.14115 * 3 / 4) || vars->game.player_pdv <= 1.570575)
+void    get_delta(t_vars *vars)
+{
+    printf("pdv = %d\n", vars->game.player_pdv);
+    if (vars->game.player_pdv >= 270)
     {
-        delta_x = 1;
-        delta_y = get_opposite(1, vars->game.player_pdv);
-        printf("ploc\n");
+        vars->game.delta_y = get_opp_f_one(adapt_angle(vars));
+        vars->game.delta_x = get_adj_f_one(adapt_angle(vars));
     }
-//    printf("delta_y = %f\n", delta_y);
-    printf("hypothenus = %f\n", get_hypothenus(1, vars->game.player_pdv));
+    else if (vars->game.player_pdv >= 180)
+    {
+        vars->game.delta_y = -get_adj_f_one(adapt_angle(vars));
+        vars->game.delta_x = -get_opp_f_one(adapt_angle(vars));
+    }
+    else if (vars->game.player_pdv >= 90)
+    {
+        vars->game.delta_y = -get_opp_f_one(adapt_angle(vars));
+        vars->game.delta_x = get_adj_f_one(adapt_angle(vars));
+    }
+    else
+    {
+        vars->game.delta_y = get_adj_f_one(adapt_angle(vars));
+        vars->game.delta_x = get_opp_f_one(adapt_angle(vars));
+    }
+    printf("delta_x = %f, delta_y = %f\n", vars->game.delta_x, vars->game.delta_y);
 }
 
 void    rotate_view(t_vars *vars, int keycode)
 {
     if (keycode == 65363)
     {
-        vars->game.player_pdv += (3.14115 / 4);
-        if (vars->game.player_pdv == (2 * 3.14115))
+        vars->game.player_pdv += 15;
+        if (vars->game.player_pdv == 360)
             vars->game.player_pdv = 0;
     }
     else if (keycode == 65361)
     {
-        vars->game.player_pdv -= (3.14115 / 4);
+        vars->game.player_pdv -= 15;
         if (vars->game.player_pdv < 0)
-            vars->game.player_pdv = (2 * 3.14115) - (3.14115 / 4);
+            vars->game.player_pdv = 345;
     }
-    printf("angle = %f\n", vars->game.player_pdv);
-}
+    get_delta(vars);
+} 

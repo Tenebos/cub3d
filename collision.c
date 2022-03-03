@@ -54,6 +54,6 @@ void	check_collision (t_vars *vars, int keycode)
 	else if (keycode == 100)
         increase_x(vars);
 	printf("player_x = %d, player y = %d\n", vars->game.player_x, vars->game.player_y);
-	find_view_end(vars);
+	get_delta(vars);
 	refresh_img(vars);
 }

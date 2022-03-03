@@ -17,11 +17,15 @@
 #include "./../minilibx-linux/mlx_int.h"
 #include <math.h>
 
+#define _USE_MATH_DEFINES
+
 typedef struct  s_game
 {
 	int player_x;
 	int player_y;
-	double player_pdv;
+	double delta_x;
+	double delta_y;
+	int player_pdv;
 }		t_game;
 
 typedef struct	s_data
@@ -97,7 +101,7 @@ void	refresh_img(t_vars *vars);
 
 //collision
 void	check_collision (t_vars *vars, int keycode);
-void	find_view_end(t_vars *vars);
+void	get_delta(t_vars *vars);
 void	rotate_view(t_vars *vars, int keycode);
 
 //clean and close
